@@ -1,14 +1,184 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+
+    <style>
+        *{margin: 0; padding: 0;box-sizing: border-box; font-family:Arial, Helvetica, sans-serif; text-decoration: none;}
+        body{display: grid; grid-template-rows: auto 1fr auto; min-height: 100vh; background-color: rgb(126, 143, 163);}
+
+        header{background-color: #5D6669; height: min-content; border-bottom: 3px solid black; }
+        h1{margin:10px 50px 0 50px; border-bottom: 3px solid black; text-align: center; padding-bottom: 3px; font-size: 40px; font-weight: 700;}
+        #links{margin: 7px 70px; display: flex; justify-content: center; gap:200px; flex-direction: row;}
+        header a{display: block; width: 200px; background-color: #6C929C; text-align: center; color:black; padding: 10px; border: 3px solid black; transition: all 0.4s; 
+ font-size: 20px; font-weight: 500; border-radius: 15px;
+        
+        }
+        header a:hover{color:#263236; background-color: #a8cad4; border-color: #263236;}
+
+code{display: block; width: 700px; background-color: #323232; word-break:break-all; border: 3px solid black; padding: 10px; color: darkgrey;}
+pre{padding: 10px 0;display: block;}
+
+main{display: flex; flex-direction:column ; justify-content: space-between; gap:50px; padding: 80px 0;}
+section *{margin:0 auto;}
+img{border: 3px solid black; border-radius: 25px; display: block; margin-top: 20px;}
+h2{width: 700px; padding: 5px; background-color: #CFF4FF; text-align: center; font-size: 25px; border: 3px solid black; border-radius: 20px;}
+.txt_b{font-weight: 600;}
+.txt_l{color:#292f4e; text-decoration: underline wavy;}
+section p{font-size: 20px; width: 1000px; padding-top: 20px;}
+
+        footer{background-color: #5D6669; border-top: 3px solid black; height: min-content;}
+        footer p{padding: 10px; font-size: 15px; text-align: center; font-weight: 600;}
+
+        .purpd{color:mediumslateblue;}
+        .purp{color:mediumorchid;}
+.green{color:darkcyan;}
+.mag{color:orchid;}
+.lblue{color:lightskyblue;}
+.blue{color:dodgerblue;}
+.oran{color:orange;}
+.yell{color:gold;}
+.red{color: orangered;}
+.gray{color: dimgray;}
+    </style>
 </head>
 <body>
- <a href="code/code_1.cpp" download>code 1</a>
-     <a href="code/code_2.cpp" download>code 2</a>
-    <a href="code/code.zip" download>code</a>
+    <header>
+        <h1>Wzorzec zachowania: strategia</h1>
+        <div id="links">
+ <a href="code/code_1.cpp" download>Code 1</a>
+     <a href="code/code_2.cpp" download>Code 2</a>
+    <a href="code/code.zip" download>All code</a></div>
+    </header>
+
+
+
+    <main>
+<section>
+    <h2>Co to jest wzorzec strategia?</h2>
+    <p><span class="txt_b">Strategia</span> jest to wzorzec projektowania, który pozwala wydzielić grupę algorytmów o podobnym działaniu lecz różnej funkcjonalności wewnętrznej, mogące się dynamicznie zmieniać między sobą, a poźniej stworzyć do tych metod osobne klasy i metody przełączania między nimi.</p>
+</section>
+
+
+
+<section>
+    <h2>Schemat wzorca strategii:</h2>
+    <img src="sp.png" alt="" width="900" height="425">
+<p>Klasa, nazywana <span class="txt_b">kontekstem</span> zawiera wskażnik na jedną ze <span class="txt_b">strategii</span>, której deleguje wykonanie algorytmu.</p>
+<p><span class="txt_b">Interfejs</span> to abstrakcyjny typ klas, od którego są tworzone klasy pochodne, zwane <span class="txt_b">strategiami</span>.</p>
+</section>
+
+<section>
+    <h2>Przykład wykorzystania wrorca strategii:</h2>
+    <p>Chcemy stworzyc bossa w grze, dajmy mu ładne imię "Baron Gleb II von Allegart". Gleb będzie miał różne ataki, między którymi będzie potrafił się przełączać. Stwórzmy interfejs, czyli klasę podstawową:</p>
     
+    
+    
+    <pre><code><span class="red">class</span> <span class="green">BossAttack</span><span class="yell">{</span>
+    <span class="red">public:</span>
+<span class="blue">virtual</span> <span class="purp">~BossAttack</span><span class="purpd">()</span>=<span class="red">default</span>; <span class="gray">//dekonstruktor w strategii jest obowiazkowy</span>
+<span class="blue">virtual</span> <span class="red">int</span> <span class="purp">attack</span><span class="purpd">(</span><span class="green">string</span> <span class="oran">boss_name</span><span class="purpd">)</span>=0; <span class="gray">//funkcja bedzie wymac nadpisania</span>
+<span class="yell">}</span>;</code></pre>
+
+
+    <p>Dodajmy kilka metod ataków, tworząc nowe klasy:</p>
+
+
+    <pre><code><span class="red">class</span> <span class="green">BossAttackKnife</span>:<span class="red">public</span> <span class="green">BossAttack</span><span class="yell">{</span><span class="red">public:</span>
+<span class="red">int</span> <span class="purp">attack</span><span class="purpd">(</span><span class="green">string</span> <span class="oran">boss_name</span><span class="purpd">)</span> <span class="blue">override</span><span class="purpd">{</span>
+    cout<span class="purp">&lt;&lt;</span><span class="oran">boss_name</span><span class="purp">&lt;&lt;</span><span class="lblue">" atakuje magicznym scyzorykiem."</span><span class="purp">&lt;&lt;endl</span>;
+    <span class="mag">return</span> 30;
+<span class="purpd">}</span>
+<span class="yell">}</span>;
+
+<span class="red">class</span> <span class="green">BossAttackMachete</span>:<span class="red">public</span> <span class="green">BossAttack</span><span class="yell">{</span><span class="red">public:</span>
+<span class="red">int</span> <span class="purp">attack</span><span class="purpd">(</span><span class="green">string</span> <span class="oran">boss_name</span><span class="purpd">)</span> <span class="blue">override</span><span class="purpd">{</span>
+    cout<span class="purp">&lt;&lt;</span><span class="oran">boss_name</span><span class="purp">&lt;&lt;</span><span class="lblue">" tnie twoja plec zalodowala macheta."</span><span class="purp">&lt;&lt;endl</span>;
+    <span class="mag">return</span> 60;
+<span class="purpd">}</span>
+<span class="yell">}</span>;
+
+<span class="red">class</span> <span class="green">BossAttackBones</span>:<span class="red">public</span> <span class="green">BossAttack</span><span class="yell">{</span><span class="red">public:</span>
+<span class="red">int</span> <span class="purp">attack</span><span class="purpd">(</span><span class="green">string</span> <span class="oran">boss_name</span><span class="purpd">)</span> <span class="blue">override</span><span class="purpd">{</span>
+    cout<span class="purp">&lt;&lt;</span><span class="oran">boss_name</span><span class="purp">&lt;&lt;</span><span class="lblue">" rzuca eksplodujace rybie osci."</span><span class="purp">&lt;&lt;endl</span>;
+    <span class="mag">return</span> 200;
+<span class="purpd">}</span>
+<span class="yell">}</span>;
+
+<span class="red">class</span> <span class="green">=BossAttackDance</span>:<span class="red">public</span> <span class="green">BossAttack</span><span class="yell">{</span><span class="red">public:</span>
+<span class="red">int</span> <span class="purp">attack</span><span class="purpd">(</span><span class="green">string</span> <span class="oran">boss_name</span><span class="purpd">)</span> <span class="blue">override</span><span class="purpd">{</span>
+    cout<span class="purp">&lt;&lt;</span><span class="oran">boss_name</span><span class="purp">&lt;&lt;</span><span class="lblue">" tanczy brake-dance na nagrobku twojego dziadka."</span><span class="purp">&lt;&lt;endl</span>;
+    <span class="mag">return</span> 0;
+<span class="purpd">}</span>
+<span class="yell">}</span>;</code></pre>
+
+
+
+    <p>
+        Stwórzmy klasę bossa wraz ze strategią ataku:
+    </p>
+    <pre><code><span class="red">class</span> <span class="green">Boss</span><span class="yell">{</span>
+    <span class="red">private:</span>
+    <span class="green">unique_ptr</span>&lt;<span class="green">BossAttack</span>&gt;attack_strategy_;<span class="gray">//to jest wskaznik na strategie</span>
+    <span class="red">public:</span>
+    <span class="green">string</span> boss_name;
+<span class="red">void</span> <span class="purp">setAttack</span><span class="purpd">(</span><span class="green">unique_ptr</span>&lt;<span class="green">BossAttack</span>&gt;<span class="oran">new_attack_strategy</span><span class="purpd">){</span>
+    attack_strategy_=<span class="green">std</span>::<span class="purp">move</span><span class="blue">(</span><span class="oran">new_attack_strategy</span><span class="blue">)</span>;
+<span class="purpd">}</span><span class="gray">//metoda zmiany strategii</span>
+
+<span class="red">int</span> <span class="purp">attack</span><span class="purpd">(){</span>
+    <span class="mag">if</span><span class="blue">(</span>attack_strategy_<span class="blue">){</span>
+        <span class="mag">return</span> attack_strategy_-&gt;<span class="purp">attack</span><span class="yell">(</span>boss_name<span class="yell">)</span>;<span class="gray">//klasa-&gt;atak
+        //inny sposob to (*attack_strategy_).attack(boss_name);</span>
+    <span class="blue">}</span><span class="mag">else</span><span class="blue">{</span>
+        cout<span class="purp">&lt;&lt;</span>boss_name<span class="purp">&lt;&lt;</span><span class="lblue">" pije mleko."</span><span class="purp">&lt;&lt;endl</span>;
+        <span class="mag">return</span> 0;
+    <span class="blue">}</span>
+<span class="purpd">}</span>
+<span class="yell">}</span>;</code></pre>
+    <p>Spróbujmy wywołać nasz kod:</p>
+    <pre><code><span class="red">int</span> <span class="purp">main</span><span class="yell">(){</span>
+<span class="green">Boss</span> Gleb;
+Gleb.boss_name<span class="purp">=</span><span class="lblue">"Baron Gleb II von Allegart"</span>;<span class="gray">//jakzez bez tak pieknego imienia?</span>
+<span class="red">int</span> your_health=300;
+
+Gleb.<span class="purp">setAttack</span><span class="purpd">(</span><span class="purp">make_unique</span>&lt;<span class="green">BossAttackMachete</span>&gt;<span class="blue">()</span><span class="purpd">)</span>;<span class="gray">//ustawienie wywolywanej klasy</span>
+your_health-=Gleb.<span class="purp">attack</span><span class="purpd">()</span>;
+
+Gleb.<span class="purp">setAttack</span><span class="purpd">(</span><span class="purp">make_unique</span>&lt;<span class="green">BossAttackBones</span>&gt;<span class="blue">()</span><span class="purpd">)</span>;
+your_health-=Gleb.<span class="purp">attack</span><span class="purpd">()</span>;
+
+Gleb.<span class="purp">setAttack</span><span class="purpd">(</span><span class="purp">make_unique</span>&lt;<span class="green">BossAttackDance</span>&gt;<span class="blue">()</span><span class="purpd">)</span>;
+your_health-=Gleb.<span class="purp">attack</span><span class="purpd">()</span>;
+
+<span class="mag">if</span> <span class="purpd">(</span>your_health&lt;0<span class="purpd">){</span>
+cout<span class="purp">&lt;&lt;</span><span class="lblue">"Po dlugich przemysleniach "</span><span class="purp">&lt;&lt;</span>Gleb.boss_name<span class="purp">&lt;&lt;</span><span class="lblue">" zadecydowal wyslac ciebie na 
+sluzbe do osmanckiego sultana."</span><span class="purp">&lt;&lt;endl</span>;
+<span class="purpd">}</span><span class="mag">else</span><span class="purpd">{</span>
+cout<span class="purp">&lt;&lt;</span><span class="lblue">"Twoje zdrowie wynioslo "</span><span class="purp">&lt;&lt;</span>your_health<span class="purp">&lt;&lt;</span> <span class="lblue">" po tym, jak wypiles te podejrzana herbata 
+ze stokrotka."</span><span class="purp">&lt;&lt;endl</span>;<span class="purpd">}</span>
+<span class="mag">return</span> 0;
+<span class="yell">}</span></code></pre>
+    <p>Powyżej został przedstawiony <a href="code/code_1.cpp" class="txt_l">Code 1</a>. Bardziej rozbudowaną wersję tego programu można znaleźć pod linkiem <a href="code/code_2.cpp" class="txt_l">Code 2</a>.</p>
+</section>
+
+<section>
+<h2>Po co wykorzystywac wzorzec strategii?</h2>
+<p>
+    Wzorzec strategii pozwala na dynamiczną zmianę algorytmy wewnątrz objektu. 
+    Stosowanie go w kodzie pozwala izolować algorytmy i uniknąć konstrukscji wielu warunków, zmniejszając ilość pisanego kodu oraz uproszczając dodawanie nowych metod.
+</p>
+</section>
+
+
+</main>
+
+
+
+    <footer>
+        <p>Ta część pracy była wykonana przez Gleba Efimovicha.</p>
+    </footer>
 </body>
 </html>
